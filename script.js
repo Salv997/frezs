@@ -12,9 +12,14 @@ if (itemToggle == 'false') {
 items.forEach(item => item.addEventListener('click', toggleAccordion));
 
 
-
 function changeSlide(index) {
+    const screenWidth = window.innerWidth;
     const slider = document.querySelector('.slider');
-    const translateValue = index * -53;
-    slider.style.transform = `translateX(${translateValue}rem)`;
-  }
+    if (screenWidth > 767) {
+        const translateValue = index * -53;
+        slider.style.transform = `translateX(${translateValue}rem)`;
+    } else {
+        const translateValue = index * -75;
+        slider.style.transform = `translateX(${translateValue}vw)`;
+    }
+}
