@@ -1,30 +1,5 @@
-<?php
-require 'connection.php';
-
-if(isset($_POST["submit"])){
-  $name = $_POST["name"];
-  $age = $_POST["age"];
-  $country = $_POST["country"];
-  $gender = $_POST["gender"];
-
-  $languages = $_POST["languages"];
-  $language = "";
-  foreach($languages as $row){
-    $language .= $row . ",";
-  }
-
-  $query = "INSERT INTO tb_data VALUES('', '$name', '$age', '$country', '$gender', '$language')";
-  mysqli_query($conn,$query);
-  echo
-  "
-  <script> alert('Data Inserted Successfully'); </script>
-  ";
-}
-?>
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +9,7 @@ if(isset($_POST["submit"])){
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=block" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <nav>
@@ -145,28 +121,41 @@ if(isset($_POST["submit"])){
         </div>
         <div class="column-2">
             <h3>Sign up</h3>
-            <form class="" action="" method="post" autocomplete="off">
-                <label for="">Name</label>
-                <input type="text" name="name" required value="">
-                <label for="">Age</label>
-                <input type="number" name="age" required value="">
-                <label for="">Country</label>
-                <select class="" name="country" required>
-                    <option value="" selected hidden>Select Country</option>
-                    <option value="USA">USA</option>
-                    <option value="UK">UK</option>
-                    <option value="India">India</option>
-                </select>
-                <label for="">Gender</label>
-                <input type="radio" name="gender" value="Male" required> Male
-                <input type="radio" name="gender" value="Female"> Female
-                <label for="">Languages</label>
-                <input type="checkbox" name="languages[]" value="English">English
-                <input type="checkbox" name="languages[]" value="Chinese">Chinese
-                <input type="checkbox" name="languages[]" value="Spanish">Spanish
-                <br>
-                <button type="submit" name="submit">Submit</button>
+            <form action="process.php" method="post" id="form">
+                <label for="name">Your Name</label>
+                <input type="text" name="name" placeholder="Enter Name">
+                <label for="lname">Email</label>
+                <input type="email" name="email" placeholder="Enter Email">
+                <label for="lname">Còdigo Postal</label>
+                <input type="number" name="codigo" placeholder="Enter Email">
+                <label for="">¿Eres particular o comercio? *</label>
+                <input type="radio" name="tipo" value="Individual"> Individual
+                <input type="radio" name="tipo" value="Comercio"> Comercio
+                <label for="lname">Message</label>
+                <textarea name="message"></textarea>
+                <div class="submit-btn">
+                    <button type="submit" id="submit"> Send </button>   
+                </div>
             </form>
+            <div id="response"></div>
+            <script>
+            $("#submit").click( function() {
+            
+            $.post( $("#form").attr("action"),
+                    $("#form :input").serializeArray(),
+                function(info) {
+            
+                    $("#response").empty();
+                    $("#response").html(info);
+                
+                });
+            
+            $("#form").submit( function() {
+                return false;  
+            });
+            });
+            
+            </script>
         </div>
     </section>
     <section id="faq">
